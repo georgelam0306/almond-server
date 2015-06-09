@@ -12,6 +12,13 @@ var credentials = require('./config.js');
 var userCalendar = require('./external-apis/calendar.js');
 var userMap = require('./external-apis/map.js');
 var uber = require('./external-apis/uber.js');
+var request = require('request');
+var http = require('http');
+
+var ionicPushServer = require('ionic-push-server');
+
+
+
 
 app.use(bodyParser.urlencoded({
   extended: true
@@ -42,6 +49,33 @@ app.use(function(req, res, next) {
     next()
   }
 });
+
+app.get('/push', function(req, res) {
+  var credentials = {
+    IonicApplicationID : "21a5d31c",
+    IonicApplicationAPIsecret : "f2aafa5427d43c6de1d99035be23e4169bc7116139f21649"
+  }; 
+
+  var notification = {
+    "tokens":["DEV-091e1515-14d3-4700-b477-b8c544ce4a6d"],
+    "notification":{
+      "alert":"Hi from Ionic Push Service! 2",
+      "ios":{
+        "badge":1,
+        "sound":"chime.aiff",
+        "expiry": 1423238641,
+        "priority": 10,
+        "contentAvailable": true,
+        "payload":{
+          "key1":"value",
+          "key2":"value"
+        }
+      }
+    }
+  };
+  ionicPushServer(credentials, notification);
+  res.json({result: 'Success'});
+})
 
 app.get('/temp', function(req, res) {
   res.send('<!DOCTYPE html><body><a href="/auth/google">Authorize</a></body></html>')

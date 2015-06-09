@@ -24,6 +24,7 @@ module.exports = function(app, router, nohm, UserModel, userCalendar, userMap, u
    * since epoch time
    */
   router.post('/routes', function(req, res) {
+    console.log(req);
       var origin = req.body.origin;
       var destination = req.body.destination;
       var arrivalTime = req.body.arrivalTime;
